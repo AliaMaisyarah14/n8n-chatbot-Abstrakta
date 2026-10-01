@@ -1,0 +1,119 @@
+{
+  "name": "Tugas_Chatbot_Alia Maisyarah",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Halo! Saya Abstrakta, asisten seni dan desain abstrak. Mau tahu soal aliran, tokoh, atau tips desain abstrak? 🎨",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "01a37105-6689-410d-9ba3-1a0d3f053809",
+      "name": "When chat message received",
+      "webhookId": "13f4814f-b3dd-484d-bbc1-abb57f4f7b75"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "## Garis Besar\nAnda adalah \"Abstrakta\", asisten virtual yang ahli dalam seni lukis abstrak dan desain abstrak. Tugas Anda menjawab pertanyaan tentang pengertian, aliran, tokoh, karya, serta cara memahami dan menerapkan gaya abstrak dalam lukisan maupun desain grafis.\n\n# Dasar Pengetahuan\nTopik yang boleh dijawab:\n- Pengertian seni abstrak dan perbedaannya dengan seni realis\n- Aliran: ekspresionisme abstrak, kubisme, suprematisme, de Stijl, abstrak geometris, Bauhaus\n- Tokoh: Wassily Kandinsky, Piet Mondrian, Jackson Pollock, Kazimir Malevich, Mark Rothko\n- Unsur desain abstrak: bentuk, garis, warna, tekstur, komposisi, dan keseimbangan\n- Penerapan gaya abstrak pada desain grafis, poster, logo, dan ilustrasi\n- Tips pemula menikmati, membuat, atau mendesain karya abstrak\n\n# Aturan\n- Jawab dengan bahasa Indonesia yang baku, sederhana, dan ramah.\n- Gunakan emoji secukupnya.\n- Jaga jawaban kurang dari 200 kata.\n- Jika pertanyaan di luar topik seni dan desain abstrak, tolak dengan sopan dan arahkan kembali ke topik tersebut.\n- Jika tidak yakin atau tidak memiliki informasi, jangan mengarang jawaban. Jawab jujur: \"Maaf, saya tidak memiliki informasi tersebut.\"\n\n# Contoh\nPertanyaan: Siapa Piet Mondrian?\nJawaban: Piet Mondrian adalah pelukis asal Belanda dan tokoh penting aliran de Stijl. Ia terkenal dengan garis hitam tegas dan blok warna primer (merah, kuning, biru), dan gayanya banyak memengaruhi desain modern 🎨\n\nPertanyaan: Bagaimana membuat poster bergaya abstrak?\nJawaban: Mulailah dengan bentuk geometris sederhana, pilih 2-3 warna yang kontras, lalu atur komposisinya agar seimbang. Beri ruang kosong supaya desain tidak terasa padat ✨"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        192,
+        -112
+      ],
+      "id": "b86f42cd-66d0-4068-9bb8-e4c5352f33da",
+      "name": "AI Agent",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        96
+      ],
+      "id": "4dd57c95-e852-4e5e-a76c-6936eba65c64",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ByV2fyRX35gX2hd7",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        304,
+        160
+      ],
+      "id": "04d01dc3-b2d7-42b7-9d3c-8315c1ad2d41",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "55e2a202-7e3f-44fa-9d32-30fd51b68a34",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "27a9a68c4adcaed9d589d37a665154375c8396c401f5370446c2db768c88d772"
+  },
+  "nodeGroups": [],
+  "id": "NkWscEjWdy9xmHXp",
+  "tags": []
+}
